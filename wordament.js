@@ -22,7 +22,7 @@ class Letter{
   }
 }
 
-var firebaseConfig = {
+/*var firebaseConfig = {
     apiKey: "AIzaSyBp4lTmSt8zEIz_znWixN3FEpDJsXx7YsU",
     authDomain: "wordament-1b57b.firebaseapp.com",
     databaseURL: "https://wordament-1b57b.firebaseio.com",
@@ -32,7 +32,7 @@ var firebaseConfig = {
     appId: "1:247598560726:web:fa75e1393a213dca51a077"
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);*/
 
 let setBoard=function(){
   score=0;
