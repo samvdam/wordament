@@ -44,7 +44,7 @@ let setBoard=function(){
       document.getElementById("score"+(i+1)).innerHTML=board[i].score;
       document.getElementById("score"+(i+1)).addEventListener("mousedown", tileClick);
       document.getElementById("score"+(i+1)).addEventListener("mouseover", tileOver);
-      document.getElementById("score"+(i+1)).addEventListener("mouseup", tileRelease);
+      document.addEventListener("mouseup", tileRelease);
     //}
   }
   //document.getElementById("guesses").innerHTML=corWords;
