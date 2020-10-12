@@ -50,6 +50,10 @@ $("#login").click(()=>{
   firebase.auth().signInWithRedirect(google_provider);
 });
 
+$("#anonymousLogin").click(()=>{
+    firebase.auth().signInAnonymously();
+});
+
 let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/timer', )
   .then(function(response){
