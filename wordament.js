@@ -19,6 +19,10 @@ let isGame=true;
 
 let words;
 
+let uid;
+
+let leaderboard=[];
+
 class Letter{
   constructor(letter, score){
     this.letter=letter;
@@ -46,6 +50,11 @@ $("#googleLogin").click(()=>{
 
 firebase.auth().signInAnonymously();
 
+firebase.auth().onAuthStateChanged(user => {
+  if (!!user){
+    uid=user.uid;
+  }
+});
 
 let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/timer', )
@@ -64,6 +73,7 @@ let setGame=function(){
   $('#wordamentGame').show();
   score=0;
   corWords=[];
+  //myDatabase.ref("leaderboard").set(null);
   document.getElementById("guesses").innerHTML="";
   for(i=0;i<16;i++){
     //for(j=0;j<4;j++){
@@ -84,9 +94,26 @@ let setGame=function(){
 
 let setLeaderboard=function(){
   $('#wordamentGame').hide();
+  
+  let boardData={
+    user: "Player "+uid,
+    userScore:score
+  };
+  myDatabase.ref("leaderboard").update(boardData);
+  setTimeout(pullBoard,500);
+  
   $('#wordamentBoard').show();
+  
   document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
+}
+
+let pullBoard=function(){
+  leaderboard=[];
+  myDatabase.ref("leaderboard").once('value',ss=>{
+    leaderboard=ss.val();
+    console.log(leaderboard);
+  })
 }
 
 let tickDown=function(){
