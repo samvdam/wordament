@@ -112,7 +112,7 @@ let pullBoard=function(){
   leaderboard=[];
   myDatabase.ref("leaderboard").once('value',ss=>{
     leaderboard=ss.val();
-    console.log(leaderboard);
+    console.log(JSON.parse(leaderboard));
   })
 }
 
