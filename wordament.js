@@ -99,7 +99,7 @@ let setLeaderboard=function(){
     user: "Player "+uid,
     userScore:score
   };
-  myDatabase.ref("leaderboard").update(boardData);
+  myDatabase.ref("leaderboard/"+uid).update(boardData);
   setTimeout(pullBoard,500);
   
   $('#wordamentBoard').show();
