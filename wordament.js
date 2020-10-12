@@ -6,7 +6,9 @@ let board=[];
 let guess="";
 let guessScore=0;
 
-let lastPos=[-1,-1];
+let curPos=[-1,-1];
+let lastPos=[-2,-2];
+let usedPos=[];
 
 let corWords=[];
 let score=0;
@@ -15,6 +17,8 @@ let timer=[0,0,0];
 let timerID;
 let isGame=true;
 
+let words;
+
 class Letter{
   constructor(letter, score){
     this.letter=letter;
@@ -22,7 +26,7 @@ class Letter{
   }
 }
 
-/*var firebaseConfig = {
+var firebaseConfig = {
     apiKey: "AIzaSyBp4lTmSt8zEIz_znWixN3FEpDJsXx7YsU",
     authDomain: "wordament-1b57b.firebaseapp.com",
     databaseURL: "https://wordament-1b57b.firebaseio.com",
@@ -32,11 +36,38 @@ class Letter{
     appId: "1:247598560726:web:fa75e1393a213dca51a077"
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);*/
+firebase.initializeApp(firebaseConfig);
+let myDatabase=firebase.database();
+var google_provider = new firebase.auth.GoogleAuthProvider();
 
-let setBoard=function(){
+firebase.auth().onAuthStateChanged(user => {
+  if (!!user){
+    alert(`${user.displayName || user.email}`);
+  }
+});
+
+$("#login").click(()=>{
+  firebase.auth().signInWithRedirect(google_provider);
+});
+
+let setWords=function(){
+  fetch('https://serious-available-idea.glitch.me/timer', )
+  .then(function(response){
+    //response.text().then(function(text) {
+      //words = text.split("\n");
+      console.log(response);
+    //});
+  });
+}
+
+setWords();
+
+let setGame=function(){
+  $('#wordamentBoard').hide();
+  $('#wordamentGame').show();
   score=0;
   corWords=[];
+  document.getElementById("guesses").innerHTML="";
   for(i=0;i<16;i++){
     //for(j=0;j<4;j++){
       board[i]=setLetter(Math.floor(Math.random()*213));
@@ -50,20 +81,26 @@ let setBoard=function(){
   //document.getElementById("guesses").innerHTML=corWords;
   document.getElementById("totalScore").innerHTML=score;
   timer[0]=2;
-  document.getElementById("timer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+  document.getElementById("gameTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
   timerID=setInterval(tickDown,1000);
 }
 
 let setLeaderboard=function(){
-
-  document.getElementById("timer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+  $('#wordamentGame').hide();
+  $('#wordamentBoard').show();
+  document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
 }
 
 let tickDown=function(){
   timer[2]--;
   updateClock(timer,2);
-  document.getElementById("timer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+  if(isGame){
+  document.getElementById("gameTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+  }
+  else{
+    document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+  }
   if(timer[0]==0 && timer[1]==0 && timer[2]==0){
     if(isGame){
       isGame=false;
@@ -73,7 +110,7 @@ let tickDown=function(){
     }
     else{
       isGame=true;
-      setBoard();
+      setGame();
       timer[0]=2;
     }
     clearInterval(timerID);
@@ -105,39 +142,52 @@ let checkGuess=function(){
   return true;
 }
 
-let checkRepeat=function(){
-  let repeat=false;
-  corWords.forEach(word=>repeat=(guess==word || repeat));
-  console.log(repeat);
-  return repeat;
-}
-
 let tileClick=function(){
   tile=findTile(this.id);
   if(document.getElementById("tile"+tile).style.backgroundColor=="rgb(0, 191, 255)"){
     document.getElementById("tile"+tile).style.backgroundColor="blue";
     guess+=document.getElementById("tile"+tile).innerHTML;
+    document.getElementById("current").innerHTML=guess;
     guessScore+=parseInt(this.innerHTML);
-    lastPos[0]=0;
-    lastPos[1]=0;
+    curPos[0]=Math.floor((tile-1)/4);
+    curPos[1]=Math.floor((tile-1)%4);
+    usedPos.push(tile);
   }
 }
 
 let tileOver=function(){
   tile=findTile(this.id);
-  if((lastPos[0]>=0 || lastPos[1]>=0) && document.getElementById("tile"+tile).style.backgroundColor!="blue"){
-    document.getElementById("tile"+tile).style.backgroundColor="blue";
-    guess+=document.getElementById("tile"+tile).innerHTML;
-    guessScore+=parseInt(this.innerHTML);
+  if(curPos[0]>=0 && curPos[1]>=0){
+    curPos[0]=Math.floor((tile-1)/4);
+    curPos[1]=Math.floor((tile-1)%4);
   }
-  else{
+  if (curPos[0]==lastPos[0] && curPos[1]==lastPos[1]){
+    document.getElementById("tile"+usedPos[usedPos.length-1]).style.backgroundColor="rgb(0, 191, 255)";
+    guess=guess.substring(0,guess.length-1);
+    document.getElementById("current").innerHTML=guess;
+    guessScore-=parseInt(this.innerHTML);
     
+    usedPos.pop();
+    lastPos[0]=Math.floor((usedPos[usedPos.length-2]-1)/4);
+    lastPos[1]=Math.floor((usedPos[usedPos.length-2]-1)%4);
+  }
+  else if(curPos[0]>=0 && curPos[1]>=0 && document.getElementById("tile"+tile).style.backgroundColor=="rgb(0, 191, 255)"){
+    if((curPos[0]>=(Math.floor((usedPos[usedPos.length-1]-1)/4))-1 && curPos[0]<=(Math.floor((usedPos[usedPos.length-1]-1)/4))+1) && (curPos[1]>=((usedPos[usedPos.length-1]-1)%4)-1 && curPos[1]<=((usedPos[usedPos.length-1]-1)%4)+1)){
+      document.getElementById("tile"+tile).style.backgroundColor="blue";
+      guess+=document.getElementById("tile"+tile).innerHTML;
+      document.getElementById("current").innerHTML=guess;
+      guessScore+=parseInt(this.innerHTML);
+      lastPos[0]=Math.floor((usedPos[usedPos.length-1]-1)/4);
+      lastPos[1]=Math.floor((usedPos[usedPos.length-1]-1)%4);
+      usedPos.push(tile);
+    }
   }
 }
 
 let tileRelease=function(){
-  lastPos=[-1,-1];
-  if(checkGuess()&&!checkRepeat()&&guess.length>2){
+  curPos=[-1,-1];
+  lastPos=[-2,-2];
+  if(checkGuess()&&!corWords.includes(guess)&&guess.length>2){
     corWords.push(guess);
     if(guess.length>7){
       guessScore*=3
@@ -150,11 +200,11 @@ let tileRelease=function(){
       guessScore=Math.round(guessScore);
     }
     score+=parseInt(guessScore);
-    document.getElementById("guesses").innerHTML+=(" " + guess + " ");
+    document.getElementById("guesses").innerHTML+=(guess+" ");
     document.getElementById("totalScore").innerHTML=score;
     setBoardCorrect();
   }
-  else if(guess.length<3 || checkRepeat()){
+  else if(guess.length<3 || corWords.includes(guess)){
     setBoardShort();
   }
   else if(!checkGuess()){
@@ -162,6 +212,7 @@ let tileRelease=function(){
   }
   guess="";
   guessScore=0;
+  usedPos=[];
   setTimeout(resetBoard,1000);
 }
 
@@ -169,6 +220,7 @@ let resetBoard=function(){
   for(k=1;k<=16;k++){
     if(document.getElementById("tile"+k).style.backgroundColor!="blue" && document.getElementById("tile"+k).style.backgroundColor!="rgb(0, 191, 255)"){
       document.getElementById("tile"+k).style.backgroundColor="rgb(0, 191, 255)";
+      document.getElementById("current").innerHTML=guess;
     }
   }
 }
@@ -322,6 +374,4 @@ W=new Letter("W",6);
 X=new Letter("X",10);
 Y=new Letter("Y",5);
 Z=new Letter("Z",10);
-setBoard();
-//console.log(board[0][1].letter);
-//console.log(board[0][1].score);
+setGame();
