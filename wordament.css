@@ -2,6 +2,14 @@
 
 }
 
+#title{
+  height:6vw;
+  width:44vw;
+  margin:auto;
+  font-size:5vw;
+  text-align:center;
+}
+
 #topArea{
   margin:auto;
   height:3vw;
@@ -21,6 +29,7 @@
   height:20vw;
   background-color:white;
   text-transform: lowercase;
+  margin:auto;
 }
 
 #totalScore{
@@ -33,14 +42,11 @@
   float:left;
 }
 
-#timer{
-  color:black;
+#current{
+  width:5vw;
+  height:3vw;
   font-size:2vw;
-  width:40px;
-  height:30px;
-  background-color:white;
-  float:right;
-  margin-right:4vw;
+  margin:auto;
 }
 
 #scores{
@@ -48,6 +54,24 @@
   height:45vw;
   margin:auto;
   margin-top:-65vw;
+}
+
+#leaderboard{
+  
+}
+
+#login{
+
+}
+
+.timer{
+  color:black;
+  font-size:2vw;
+  width:4vw;
+  height:3vw;
+  background-color:white;
+  float:right;
+  margin-right:2.2vw;
 }
 
 .row{
@@ -98,5 +122,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.user{
+  
 }
 
