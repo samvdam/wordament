@@ -40,19 +40,12 @@ firebase.initializeApp(firebaseConfig);
 let myDatabase=firebase.database();
 var google_provider = new firebase.auth.GoogleAuthProvider();
 
-firebase.auth().onAuthStateChanged(user => {
-  if (!!user){
-    alert(`${user.displayName || user.email}`);
-  }
-});
-
-$("#login").click(()=>{
+$("#googleLogin").click(()=>{
   firebase.auth().signInWithRedirect(google_provider);
 });
 
-$("#anonymousLogin").click(()=>{
-    firebase.auth().signInAnonymously();
-});
+firebase.auth().signInAnonymously();
+
 
 let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/timer', )
