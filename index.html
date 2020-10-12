@@ -1,12 +1,21 @@
 <link rel="stylesheet" href="wordament.css" type="text/css">
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-database.js"></script>
 
 <div id="wordamentGame">
+  <div id="title">
+    Wordament
+  </div>
   <div id="topArea">
     <div id="totalScore">
       
     </div>
-    <div id="timer">
-      
+    <div class="timer" id="gameTimer">
+    </div>
+  </div>
+  <div id="middleArea">
+    <div id="current">
     </div>
   </div>
   <div id="board">
@@ -97,5 +106,26 @@
     </div>
   </div>
 </div>
+
+<div id="wordamentBoard">
+  <div id="title">
+    Wordament
+  </div>
+  <div id="topArea">
+    <div class="timer" id="boardTimer">
+    </div>
+  </div>
+  <div id="middleArea">
+    <div id="current">
+      Leaderboard
+    </div>
+  </div>
+  <div id="leaderboard">
+  </div>
+</div>
+
+<button id="login">
+  login
+</button>
 
 <script src="wordament.js" type="text/javascript"></script>
