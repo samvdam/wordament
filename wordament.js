@@ -20,6 +20,7 @@ let isGame=true;
 let words;
 
 let uid;
+let username="";
 
 let leaderboard=[];
 
@@ -44,10 +45,6 @@ firebase.initializeApp(firebaseConfig);
 let myDatabase=firebase.database();
 var google_provider = new firebase.auth.GoogleAuthProvider();
 
-$("#googleLogin").click(()=>{
-  firebase.auth().signInWithRedirect(google_provider);
-});
-
 firebase.auth().signInAnonymously();
 
 firebase.auth().onAuthStateChanged(user => {
@@ -56,7 +53,12 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-let setWords=function(){
+document.getElementById("setUsername").addEventListener("click",()=>{
+  username=document.getElementById("username").value;
+  document.getElementById("username").value="";
+});
+
+/*let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/timer', )
   .then(function(response){
     //response.text().then(function(text) {
@@ -66,7 +68,7 @@ let setWords=function(){
   });
 }
 
-setWords();
+setWords();*/
 
 let setGame=function(){
   $('#wordamentBoard').hide();
@@ -94,11 +96,21 @@ let setGame=function(){
 
 let setLeaderboard=function(){
   $('#wordamentGame').hide();
+  let boardData;
   
-  let boardData={
-    user: "Player "+uid,
-    userScore:score
-  };
+  if(username==""){
+    boardData={
+      user: "Player "+uid,
+      userScore:score
+    };
+  }
+  else{
+    boardData={
+      user: username,
+      userScore:score
+    };
+  }
+  
   myDatabase.ref("leaderboard/"+uid).update(boardData);
   setTimeout(pullBoard,500);
   
@@ -114,6 +126,7 @@ let pullBoard=function(){
     leaderboard=ss.val();
     console.log(JSON.parse(leaderboard));
   })
+  document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
 }
 
 let tickDown=function(){
@@ -398,4 +411,5 @@ W=new Letter("W",6);
 X=new Letter("X",10);
 Y=new Letter("Y",5);
 Z=new Letter("Z",10);
+
 setGame();
