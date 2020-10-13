@@ -111,7 +111,7 @@ let setGame=function(){
         document.getElementById("score"+(i+1)).addEventListener("mouseover", tileOver);
         document.addEventListener("mouseup", tileRelease);
     }
-  },500);
+  },600);
   document.getElementById("totalScore").innerHTML=score;
   setTimeout(displayName,500);
   timerID=setInterval(tickDown,1000);
@@ -174,7 +174,12 @@ let displayName=function(){
 }
 
 let tickDown=function(){
-  setTimer();
+  timer[2]--;
+  updateClock(timer,2);
+  
+  if(timer[0]==0 && timer[1]==0 && timer[2]==0){
+    setTimer(); 
+  }
   if(isGame){
   document.getElementById("gameTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
   }
