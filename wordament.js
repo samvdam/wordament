@@ -12,7 +12,7 @@ let score=0;
 
 let timer;
 let timerID;
-let isGame=true;
+let isGame;
 
 let words;
 
@@ -372,6 +372,7 @@ let findTile=function(id){
   return tile;
 }
 
+setIsGame();
 if(isGame){
   setGame();
 }
