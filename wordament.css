@@ -65,18 +65,31 @@
 }
 
 #leaderboard{
-  width:20vw;
+  width:40vw;
   height:40vw;
-  font-size:1.2vw;
+  font-size:1.4vw;
   line-height:3vw;
   margin:auto;
   margin-top:2vw;
   text-align:center;
 }
 
-#setUsername{
+#name{
+  height:2vw;
+  width:25vw;
+  margin-top:-45vw;
+  margin-left:70vw;
+}
 
-  margin:auto;
+#username{
+  height:1vw;
+  width:10vw;
+}
+
+#setUsername{
+  width:8vw;
+  height:1.5vw;
+  font-size:.9vw
 }
 
 .timer{
@@ -138,8 +151,3 @@
   -ms-user-select: none;
   user-select: none;
 }
-
-.user{
-  
-}
-
