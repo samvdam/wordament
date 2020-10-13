@@ -133,7 +133,7 @@ let pullBoard=function(){
       leaderboard[i]=JSON.parse(leaderboard[i]);
       //console.log(leaderboard);
     });
-    leadboard.compare(function(a, b){return a.userScore-b.userScore});
+    leaderboard.compare(function(a, b){return a.userScore-b.userScore});
     for(i=0;i<users;i++){
       document.getElementById("leaderboard").innerHTML+=(i)+". "+leaderboard[i].user+": "+leaderboard[i].userScore+"<br>";
     }
