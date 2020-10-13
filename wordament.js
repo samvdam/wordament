@@ -137,7 +137,7 @@ let setLeaderboard=function(){
       user: "Player "+(users+1),
       userScore:score
     };
-    document.getElementById("yourName").innerHTML="Your Name: "+"Player "+users;
+    document.getElementById("yourName").innerHTML="Your Name: "+"Player "+(users+1);
   }
   else{
     boardData={
