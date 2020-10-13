@@ -18,7 +18,7 @@ let words;
 
 let username;
 
-let numUsers;
+let users;
 let leaderboard=[];
 
 var firebaseConfig = {
@@ -119,6 +119,7 @@ let setGame=function(){
 
 let setLeaderboard=function(){
   $('#wordamentGame').hide();
+  setTimer();
   let boardData;
   
   myDatabase.ref("leaderboard").child("users").set(users+1);
