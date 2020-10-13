@@ -57,7 +57,7 @@ let setWords=function(){
       //console.log(response);
     response.json().then(function(data) {
         //words = data.split("\n");
-        console.log(data);
+        //console.log(data);
       });
     //});
   });
@@ -136,7 +136,7 @@ let setLeaderboard=function(){
     };
   }
   myDatabase.ref("leaderboard").child(users).update(boardData);
-  setTimeout(pullBoard,300);
+  setTimeout(pullBoard,600);
   $('#wordamentBoard').show();
    document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
