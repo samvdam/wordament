@@ -136,7 +136,7 @@ let setLeaderboard=function(){
     };
   }
   myDatabase.ref("leaderboard").child(users).update(boardData);
-  setTimeout(pullBoard,600);
+  setTimeout(pullBoard,1000);
   $('#wordamentBoard').show();
    document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
