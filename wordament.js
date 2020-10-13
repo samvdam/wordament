@@ -17,6 +17,7 @@ let isGame;
 let words;
 
 let username;
+let uid;
 
 let users;
 let leaderboard=[];
@@ -35,6 +36,12 @@ firebase.initializeApp(firebaseConfig);
 let myDatabase=firebase.database();
 
 firebase.auth().signInAnonymously();
+
+firebase.auth().onAuthStateChanged(user => {
+  if (!!user){
+    uid=user.uid;
+  }
+});
 
 document.getElementById("setUsername").addEventListener("click",()=>{
   username=document.getElementById("username").value;
@@ -123,23 +130,38 @@ let setGame=function(){
 let setLeaderboard=function(){
   $('#wordamentGame').hide();
   let boardData;
+  let isIn;
+  
+  /*for(let i=1;i<=users;i++){
+    myDatabase.ref("leaderboard").child(i).once('value',ss=>{
+      leaderboard[i-1]=ss.val();
+      leaderboard[i-1]=JSON.stringify(leaderboard[i-1]);
+      leaderboard[i-1]=JSON.parse(leaderboard[i-1]);
+      if(leaderboard[i-1]!=null){
+        isIn=leaderboard[i-1].uid==uid;
+      }
+    });
+  }
+  console.log(isIn);*/
   
   myDatabase.ref("leaderboard").child("users").set(users+1);
   if(firebase.auth().currentUser.displayName==null){
     boardData={
       user: "Player "+users,
-      userScore:score
+      userScore:score,
+      uid:uid
     };
     document.getElementById("yourName").innerHTML="Your Name: "+"Player "+users;
   }
   else{
     boardData={
       user: firebase.auth().currentUser.displayName,
-      userScore:score
+      userScore:score,
+      uid:uid
     };
   }
   myDatabase.ref("leaderboard").child(users).update(boardData);
-  setTimeout(pullBoard,1000);
+  setTimeout(pullBoard,1500);
   $('#wordamentBoard').show();
    document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
