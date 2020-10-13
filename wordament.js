@@ -124,7 +124,9 @@ let pullBoard=function(){
   leaderboard=[];
   myDatabase.ref("leaderboard").once('value',ss=>{
     leaderboard=ss.val();
-    console.log(JSON.parse(leaderboard));
+    leaderboard=JSON.stringify(leaderboard);
+    leaderboard=JSON.parse(leaderboard);
+    console.log(leaderboard);
   })
   document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
 }
