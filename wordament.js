@@ -81,6 +81,8 @@ let setGameBoard=function(){
   });
 }
 
+setGameBoard();
+
 let setTimer=function(){
   fetch('https://serious-available-idea.glitch.me/timer', )
   .then(function(response){
