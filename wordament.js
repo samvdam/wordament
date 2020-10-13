@@ -115,14 +115,14 @@ let setLeaderboard=function(){
       userScore:score
     };
   }
-  
+  console.log("before");
   myDatabase.ref("leaderboard").child("users").set(users+1);
   myDatabase.ref("leaderboard").child(users).update(boardData);
+  console.log("during");
   setTimeout(pullBoard,300);
-  
+  console.log("after");
   $('#wordamentBoard').show();
-  
-  document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+   document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
 }
 
@@ -132,9 +132,13 @@ let pullBoard=function(){
     leaderboard=ss.val();
     leaderboard=JSON.stringify(leaderboard);
     leaderboard=JSON.parse(leaderboard);
-    console.log(leaderboard);
+    //console.log(leaderboard);
+    for(i=1;i<=users;i++){
+      document.getElementById("leaderboard").innerHTML+=i+". "+leaderboard.i.user+": "+leaderboard.i.userScore;
+    }
+    
   })
-  document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
+  //document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
 }
 
 let tickDown=function(){
