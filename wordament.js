@@ -116,7 +116,7 @@ let setLeaderboard=function(){
     };
   }
   
-  myDatabase.ref("leaderboard").child("users").update(users+1);
+  myDatabase.ref("leaderboard").child("users").set(users+1);
   myDatabase.ref("leaderboard").child(users).update(boardData);
   setTimeout(pullBoard,300);
   
