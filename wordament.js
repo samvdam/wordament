@@ -79,6 +79,7 @@ let setGame=function(){
   $('#wordamentGame').show();
   score=0;
   corWords=[];
+  document.getElementById("leaderboard").innerHTML="";
   myDatabase.ref("leaderboard").set(null);
   myDatabase.ref("leaderboard").child("users").set(0);
   document.getElementById("guesses").innerHTML="";
@@ -132,7 +133,7 @@ let pullBoard=function(){
       leaderboard[i]=JSON.parse(leaderboard[i]);
       //console.log(leaderboard);
 
-        document.getElementById("leaderboard").innerHTML+=(i-1)+". "+leaderboard[i].user+": "+leaderboard[i].userScore;
+        document.getElementById("leaderboard").innerHTML+=(i-1)+". "+leaderboard[i].user+": "+leaderboard[i].userScore+"<br>";
 
 
     });
