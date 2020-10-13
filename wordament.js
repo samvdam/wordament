@@ -142,7 +142,7 @@ let pullBoard=function(){
         leaderboard.sort(function(a, b){return b.userScore-a.userScore});
         console.log(leaderboard);
     
-        for(let j=0;j<=users;j++){
+        for(let j=0;j<users;j++){
           document.getElementById("leaderboard").innerHTML+=(j+1)+". "+leaderboard[j].user+": "+leaderboard[j].userScore+"<br>";
         }
       }
