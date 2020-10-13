@@ -376,5 +376,5 @@ if(isGame){
   setGame();
 }
 else{
-  setLeaderBoard();
+  setLeaderboard();
 }
