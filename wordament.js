@@ -115,12 +115,9 @@ let setLeaderboard=function(){
       userScore:score
     };
   }
-  console.log("before");
   myDatabase.ref("leaderboard").child("users").set(users+1);
   myDatabase.ref("leaderboard").child(users).update(boardData);
-  console.log("during");
   setTimeout(pullBoard,300);
-  console.log("after");
   $('#wordamentBoard').show();
    document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
     timerID=setInterval(tickDown,1000);
@@ -128,16 +125,18 @@ let setLeaderboard=function(){
 
 let pullBoard=function(){
   leaderboard=[];
-  myDatabase.ref("leaderboard").once('value',ss=>{
-    leaderboard=ss.val();
-    leaderboard=JSON.stringify(leaderboard);
-    leaderboard=JSON.parse(leaderboard);
-    //console.log(leaderboard);
-    for(i=1;i<=users;i++){
-      document.getElementById("leaderboard").innerHTML+=i+". "+leaderboard.i.user+": "+leaderboard.i.userScore;
-    }
-    
-  })
+  for(i=1;i<=users;i++){
+    myDatabase.ref("leaderboard").child(i).once('value',ss=>{
+      leaderboard[i]=ss.val();
+      leaderboard[i]=JSON.stringify(leaderboard[i]);
+      leaderboard[i]=JSON.parse(leaderboard[i]);
+      //console.log(leaderboard);
+
+        document.getElementById("leaderboard").innerHTML+=(i-1)+". "+leaderboard[i].user+": "+leaderboard[i].userScore;
+
+
+    });
+  }
   //document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
 }
 
