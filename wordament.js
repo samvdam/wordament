@@ -52,7 +52,7 @@ document.getElementById("setUsername").addEventListener("click",()=>{
   setTimeout(displayName,100);
 });
 
-myDatabase.ref("leaderboard").child("users").on('value',ss=>{
+myDatabase.ref("users").on('value',ss=>{
   users=parseInt(ss.val());
 });
 
@@ -69,7 +69,6 @@ myDatabase.ref("leaderboard").child("users").on('value',ss=>{
     //});
   });
 }*/
-
 //setWords();
 
 let setGameBoard=function(){
@@ -112,7 +111,7 @@ let setGame=function(){
   corWords=[];
   document.getElementById("leaderboard").innerHTML="";
   myDatabase.ref("leaderboard").set(null);
-  myDatabase.ref("leaderboard").child("users").set(0);
+  myDatabase.ref("users").set(0);
   document.getElementById("guesses").innerHTML="";
   setGameBoard();
   setTimeout(function(){
@@ -132,21 +131,8 @@ let setGame=function(){
 let setLeaderboard=function(){
   $('#wordamentGame').hide();
   let boardData;
-  let isIn;
   
-  /*for(let i=1;i<=users;i++){
-    myDatabase.ref("leaderboard").child(i).once('value',ss=>{
-      leaderboard[i-1]=ss.val();
-      leaderboard[i-1]=JSON.stringify(leaderboard[i-1]);
-      leaderboard[i-1]=JSON.parse(leaderboard[i-1]);
-      if(leaderboard[i-1]!=null){
-        isIn=leaderboard[i-1].uid==uid;
-      }
-    });
-  }
-  console.log(isIn);*/
-  
-  myDatabase.ref("leaderboard").child("users").set(users+1);
+  myDatabase.ref("users").set(users+1);
   if(firebase.auth().currentUser.displayName==null){
     boardData={
       user: "Player "+users,
