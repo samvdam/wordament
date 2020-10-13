@@ -154,6 +154,10 @@ let setLeaderboard=function(){
         myDatabase.ref("leaderboard").child(uid).update(boardData);
       }
     }
+    else{
+      myDatabase.ref("users").set(users+1);
+      myDatabase.ref("leaderboard").child(uid).update(boardData);
+    }
   });
   setTimeout(pullBoard,1500);
   $('#wordamentBoard').show();
