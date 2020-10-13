@@ -132,10 +132,9 @@ let setLeaderboard=function(){
   $('#wordamentGame').hide();
   let boardData;
   
-  myDatabase.ref("users").set(users+1);
   if(firebase.auth().currentUser.displayName==null){
     boardData={
-      user: "Player "+users,
+      user: "Player "+(users+1),
       userScore:score
     };
     document.getElementById("yourName").innerHTML="Your Name: "+"Player "+users;
@@ -146,11 +145,20 @@ let setLeaderboard=function(){
       userScore:score
     };
   }
-  myDatabase.ref("leaderboard").child(uid).update(boardData);
+  myDatabase.ref("leaderboard").once('value',ss=>{
+    let data=ss.val();
+    if(data!=null){
+      let uids=Object.keys(data);
+      if(!uids.contains(uid)){
+        myDatabase.ref("users").set(users+1);
+        myDatabase.ref("leaderboard").child(uid).update(boardData);
+      }
+    }
+  });
   setTimeout(pullBoard,1500);
   $('#wordamentBoard').show();
-   document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
-    timerID=setInterval(tickDown,1000);
+  document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
+  timerID=setInterval(tickDown,1000);
 }
 
 let pullBoard=function(){
@@ -163,9 +171,9 @@ let pullBoard=function(){
           leaderboard.push(data[id]);
         });
         leaderboard.sort((a,b)=>-a.score + b.score >= 0 ? -1: 1);
+        document.getElementById("leaderboard").innerHTML="";
         leaderboard.map(user=>{
           document.getElementById("leaderboard").innerHTML+=user.user+": "+user.userScore+"<br>";
-        
         })
       }
      });
