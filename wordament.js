@@ -144,7 +144,6 @@ let setLeaderboard=function(){
 
 let pullBoard=function(){
   leaderboard=[];
-  console.log(users);
   for(let i=1;i<=users;i++){
     myDatabase.ref("leaderboard").child(i).once('value',ss=>{
       leaderboard[i-1]=ss.val();
