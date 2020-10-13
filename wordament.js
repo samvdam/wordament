@@ -83,6 +83,8 @@ let setTimer=function(){
   });
 }
 
+setTimer();
+
 let setIsGame=function(){
   fetch('https://serious-available-idea.glitch.me/game', )
   .then(function(response){
@@ -99,7 +101,6 @@ let setGame=function(){
   $('#wordamentGame').show();
   score=0;
   corWords=[];
-  setTimer();
   document.getElementById("leaderboard").innerHTML="";
   myDatabase.ref("leaderboard").set(null);
   myDatabase.ref("leaderboard").child("users").set(0);
@@ -121,7 +122,6 @@ let setGame=function(){
 
 let setLeaderboard=function(){
   $('#wordamentGame').hide();
-  setTimer();
   let boardData;
   
   myDatabase.ref("leaderboard").child("users").set(users+1);
