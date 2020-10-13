@@ -149,7 +149,7 @@ let setLeaderboard=function(){
     let data=ss.val();
     if(data!=null){
       let uids=Object.keys(data);
-      if(!uids.contains(uid)){
+      if(!uids.includes(uid)){
         myDatabase.ref("users").set(users+1);
         myDatabase.ref("leaderboard").child(uid).update(boardData);
       }
