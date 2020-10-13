@@ -19,8 +19,7 @@ let isGame=true;
 
 let words;
 
-let uid;
-let username="";
+let username;
 
 let numUsers;
 let leaderboard=[];
@@ -44,19 +43,15 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 let myDatabase=firebase.database();
-var google_provider = new firebase.auth.GoogleAuthProvider();
 
 firebase.auth().signInAnonymously();
-
-firebase.auth().onAuthStateChanged(user => {
-  if (!!user){
-    uid=user.uid;
-  }
-});
 
 document.getElementById("setUsername").addEventListener("click",()=>{
   username=document.getElementById("username").value;
   document.getElementById("username").value="";
+  firebase.auth().currentUser.updateProfile({displayName:username}).then(function(){
+    var displayName= user.displayName;
+  });
 });
 
 myDatabase.ref("leaderboard").child("users").on('value',ss=>{
@@ -104,19 +99,19 @@ let setLeaderboard=function(){
   $('#wordamentGame').hide();
   let boardData;
   
-  if(username==""){
+  myDatabase.ref("leaderboard").child("users").set(users+1);
+  if(firebase.auth().currentUser.displayName==null){
     boardData={
-      user: "Player "+uid,
+      user: "Player "+users,
       userScore:score
     };
   }
   else{
     boardData={
-      user: username,
+      user: firebase.auth().currentUser.displayName,
       userScore:score
     };
   }
-  myDatabase.ref("leaderboard").child("users").set(users+1);
   myDatabase.ref("leaderboard").child(users).update(boardData);
   setTimeout(pullBoard,300);
   $('#wordamentBoard').show();
@@ -129,18 +124,12 @@ let pullBoard=function(){
   console.log(users);
   for(let i=1;i<=users;i++){
     myDatabase.ref("leaderboard").child(i).once('value',ss=>{
-      leaderboard[i]=ss.val();
-      //console.log(leaderboard);
-      leaderboard[i]=JSON.stringify(leaderboard[i]);
-      //console.log(leaderboard);
-      leaderboard[i]=JSON.parse(leaderboard[i]);
-      //console.log(leaderboard);
-      console.log(i+", "+users);
+      leaderboard[i-1]=ss.val();
+      leaderboard[i-1]=JSON.stringify(leaderboard[i-1]);
+      leaderboard[i-1]=JSON.parse(leaderboard[i-1]);
       
       if(i==users){
-        console.log(leaderboard);
         leaderboard.sort(function(a, b){return b.userScore-a.userScore});
-        console.log(leaderboard);
     
         for(let j=0;j<users;j++){
           document.getElementById("leaderboard").innerHTML+=(j+1)+". "+leaderboard[j].user+": "+leaderboard[j].userScore+"<br>";
