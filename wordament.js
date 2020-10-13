@@ -22,6 +22,7 @@ let words;
 let uid;
 let username="";
 
+let numUsers;
 let leaderboard=[];
 
 class Letter{
@@ -58,6 +59,9 @@ document.getElementById("setUsername").addEventListener("click",()=>{
   document.getElementById("username").value="";
 });
 
+myDatabase.ref("leaderboard").child("users").on('value',ss=>{
+  users=parseInt(ss.val());
+});
 /*let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/timer', )
   .then(function(response){
@@ -75,7 +79,8 @@ let setGame=function(){
   $('#wordamentGame').show();
   score=0;
   corWords=[];
-  //myDatabase.ref("leaderboard").set(null);
+  myDatabase.ref("leaderboard").set(null);
+  myDatabase.ref("leaderboard").child("users").set(0);
   document.getElementById("guesses").innerHTML="";
   for(i=0;i<16;i++){
     //for(j=0;j<4;j++){
@@ -111,8 +116,9 @@ let setLeaderboard=function(){
     };
   }
   
-  myDatabase.ref("leaderboard/"+uid).update(boardData);
-  setTimeout(pullBoard,500);
+  myDatabase.ref("leaderboard").child("users").update(users+1);
+  myDatabase.ref("leaderboard").child(users).update(boardData);
+  setTimeout(pullBoard,300);
   
   $('#wordamentBoard').show();
   
