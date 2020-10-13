@@ -56,7 +56,7 @@ myDatabase.ref("leaderboard").child("users").on('value',ss=>{
   users=parseInt(ss.val());
 });
 
-let setWords=function(){
+/*let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/words', )
   .then(function(response){
     //response.text().then(function(text) {
@@ -68,9 +68,9 @@ let setWords=function(){
       });
     //});
   });
-}
+}*/
 
-setWords();
+//setWords();
 
 let setGameBoard=function(){
   fetch('https://serious-available-idea.glitch.me/board', )
@@ -148,19 +148,17 @@ let setLeaderboard=function(){
   if(firebase.auth().currentUser.displayName==null){
     boardData={
       user: "Player "+users,
-      userScore:score,
-      uid:uid
+      userScore:score
     };
     document.getElementById("yourName").innerHTML="Your Name: "+"Player "+users;
   }
   else{
     boardData={
       user: firebase.auth().currentUser.displayName,
-      userScore:score,
-      uid:uid
+      userScore:score
     };
   }
-  myDatabase.ref("leaderboard").child(users).update(boardData);
+  myDatabase.ref("leaderboard").child(uid).update(boardData);
   setTimeout(pullBoard,1500);
   $('#wordamentBoard').show();
    document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
@@ -169,23 +167,19 @@ let setLeaderboard=function(){
 
 let pullBoard=function(){
   leaderboard=[];
-  for(let i=1;i<=users;i++){
-    myDatabase.ref("leaderboard").child(i).once('value',ss=>{
-      leaderboard[i-1]=ss.val();
-      leaderboard[i-1]=JSON.stringify(leaderboard[i-1]);
-      leaderboard[i-1]=JSON.parse(leaderboard[i-1]);
-      
-      if(i==users){
-        leaderboard.sort(function(a, b){return b.userScore-a.userScore});
+    myDatabase.ref("leaderboard").on('value',ss=>{
+      let data=ss.val();
+      let uids=Object.keys(data);
+      uids.map(id=>{
+        leaderboard.push(data[id]);
+      });
+      leaderboard.sort((a,b)=>-a.score + b.score >= 0 ? -1: 1);
+      leaderboard.map(user=>{
+        document.getElementById("leaderboard").innerHTML+=user.user+": "+user.userScore+"<br>";
+      })
     
-        for(let j=0;j<users;j++){
-          document.getElementById("leaderboard").innerHTML+=(j+1)+". "+leaderboard[j].user+": "+leaderboard[j].userScore+"<br>";
-        }
-      }
-    });
-    
-  }
-  //document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
+          
+      });
 }
 
 let displayName=function(){
