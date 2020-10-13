@@ -92,6 +92,8 @@ let setIsGame=function(){
   });
 }
 
+setIsGame();
+
 let setGame=function(){
   $('#wordamentBoard').hide();
   $('#wordamentGame').show();
@@ -372,10 +374,11 @@ let findTile=function(id){
   return tile;
 }
 
-setIsGame();
-if(isGame){
+setTimeout(function(){
+  if(isGame){
   setGame();
 }
-else{
-  setLeaderboard();
-}
+  else{
+    setLeaderboard();
+  }
+},500);
