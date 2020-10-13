@@ -174,7 +174,7 @@ let pullBoard=function(){
         uids.map(id=>{
           leaderboard.push(data[id]);
         });
-        leaderboard.sort(function(a,b){returns -a.score + b.score});
+        leaderboard.sort(function(a,b){return b.userScore - a.userScore});
         document.getElementById("leaderboard").innerHTML="";
         leaderboard.map(user=>{
           document.getElementById("leaderboard").innerHTML+=user.user+": "+user.userScore+"<br>";
