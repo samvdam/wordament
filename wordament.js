@@ -132,11 +132,11 @@ let pullBoard=function(){
       leaderboard[i]=JSON.stringify(leaderboard[i]);
       leaderboard[i]=JSON.parse(leaderboard[i]);
       //console.log(leaderboard);
-
-        document.getElementById("leaderboard").innerHTML+=(i-1)+". "+leaderboard[i].user+": "+leaderboard[i].userScore+"<br>";
-
-
     });
+    leadboard.compare(function(a, b){return a.userScore-b.userScore});
+    for(i=0;i<users;i++){
+      document.getElementById("leaderboard").innerHTML+=(i)+". "+leaderboard[i].user+": "+leaderboard[i].userScore+"<br>";
+    }
   }
   //document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
 }
