@@ -139,7 +139,7 @@ let pullBoard=function(){
       
       if(i==users){
         console.log(leaderboard);
-        leaderboard.sort(function(a, b){return a.userScore-b.userScore});
+        leaderboard.sort(function(a, b){return b.userScore-a.userScore});
         console.log(leaderboard);
     
         for(let j=0;j<=users;j++){
