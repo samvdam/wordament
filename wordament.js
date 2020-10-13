@@ -157,17 +157,18 @@ let pullBoard=function(){
   leaderboard=[];
     myDatabase.ref("leaderboard").on('value',ss=>{
       let data=ss.val();
-      let uids=Object.keys(data);
-      uids.map(id=>{
-        leaderboard.push(data[id]);
-      });
-      leaderboard.sort((a,b)=>-a.score + b.score >= 0 ? -1: 1);
-      leaderboard.map(user=>{
-        document.getElementById("leaderboard").innerHTML+=user.user+": "+user.userScore+"<br>";
-      })
-    
-          
-      });
+      if(data!=null){
+        let uids=Object.keys(data);
+        uids.map(id=>{
+          leaderboard.push(data[id]);
+        });
+        leaderboard.sort((a,b)=>-a.score + b.score >= 0 ? -1: 1);
+        leaderboard.map(user=>{
+          document.getElementById("leaderboard").innerHTML+=user.user+": "+user.userScore+"<br>";
+        
+        })
+      }
+     });
 }
 
 let displayName=function(){
