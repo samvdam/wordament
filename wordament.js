@@ -126,17 +126,28 @@ let setLeaderboard=function(){
 
 let pullBoard=function(){
   leaderboard=[];
-  for(i=1;i<=users;i++){
+  console.log(users);
+  for(let i=1;i<=users;i++){
     myDatabase.ref("leaderboard").child(i).once('value',ss=>{
       leaderboard[i]=ss.val();
+      //console.log(leaderboard);
       leaderboard[i]=JSON.stringify(leaderboard[i]);
+      //console.log(leaderboard);
       leaderboard[i]=JSON.parse(leaderboard[i]);
       //console.log(leaderboard);
+      console.log(i+", "+users);
+      
+      if(i==users){
+        console.log(leaderboard);
+        leaderboard.sort(function(a, b){return a.userScore-b.userScore});
+        console.log(leaderboard);
+    
+        for(let j=0;j<=users;j++){
+          document.getElementById("leaderboard").innerHTML+=(j+1)+". "+leaderboard[j].user+": "+leaderboard[j].userScore+"<br>";
+        }
+      }
     });
-    leaderboard.compare(function(a, b){return a.userScore-b.userScore});
-    for(i=0;i<users;i++){
-      document.getElementById("leaderboard").innerHTML+=(i)+". "+leaderboard[i].user+": "+leaderboard[i].userScore+"<br>";
-    }
+    
   }
   //document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
 }
