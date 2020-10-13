@@ -52,6 +52,7 @@ document.getElementById("setUsername").addEventListener("click",()=>{
   firebase.auth().currentUser.updateProfile({displayName:username}).then(function(){
     var displayName= user.displayName;
   });
+  setTimeout(displayName,100);
 });
 
 myDatabase.ref("leaderboard").child("users").on('value',ss=>{
@@ -90,6 +91,7 @@ let setGame=function(){
   }
   //document.getElementById("guesses").innerHTML=corWords;
   document.getElementById("totalScore").innerHTML=score;
+  setTimeout(displayName,100);
   timer[0]=2;
   document.getElementById("gameTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
   timerID=setInterval(tickDown,1000);
@@ -105,6 +107,7 @@ let setLeaderboard=function(){
       user: "Player "+users,
       userScore:score
     };
+    document.getElementById("yourName").innerHTML="Your Name: "+"Player "+users;
   }
   else{
     boardData={
@@ -139,6 +142,15 @@ let pullBoard=function(){
     
   }
   //document.getElementById("leaderboard").innerHTML+="IllegallySam: 100<br>";
+}
+
+let displayName=function(){
+  if(firebase.auth().currentUser.displayName!=null){
+    document.getElementById("yourName").innerHTML="Your Name: "+firebase.auth().currentUser.displayName;
+  }
+  else{
+    document.getElementById("yourName").innerHTML="";
+  }
 }
 
 let tickDown=function(){
