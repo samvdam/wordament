@@ -201,7 +201,7 @@ let tickDown=function(){
   timer[2]--;
   updateClock(timer,2);
   
-  if(timer[1]==0 && timer[2]==0){
+  if((timer[1]==0 || timer[1]==3) && timer[2]==0){
     setTimer(); 
   }
   if(isGame){
