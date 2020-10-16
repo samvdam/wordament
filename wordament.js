@@ -56,20 +56,20 @@ myDatabase.ref("users").on('value',ss=>{
   users=parseInt(ss.val());
 });
 
-/*let setWords=function(){
+let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/words', )
   .then(function(response){
     //response.text().then(function(text) {
       //words = text.split("\n");
       //console.log(response);
     response.json().then(function(data) {
-        //words = data.split("\n");
-        //console.log(data);
-      });
+      words=data;
+      //console.log(words);
+     });
     //});
   });
-}*/
-//setWords();
+}
+setWords();
 
 let setGameBoard=function(){
   fetch('https://serious-available-idea.glitch.me/board', )
@@ -240,7 +240,7 @@ let updateClock=function(clock,pos){
 };
 
 let checkGuess=function(){
-  return true;
+  return words.includes(guess.toLowerCase());
 }
 
 let tileClick=function(){
