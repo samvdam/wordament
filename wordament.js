@@ -142,20 +142,22 @@ let setLeaderboard=function(){
       userScore:score
     };
   }
-  myDatabase.ref("leaderboard").once('value',ss=>{
-    let data=ss.val();
-    if(data!=null){
-      let uids=Object.keys(data);
-      if(!uids.includes(uid)){
+  if(score!=0){
+    myDatabase.ref("leaderboard").once('value',ss=>{
+      let data=ss.val();
+      if(data!=null){
+        let uids=Object.keys(data);
+        if(!uids.includes(uid)){
+          myDatabase.ref("users").set(users+1);
+          myDatabase.ref("leaderboard").child(uid).update(boardData);
+        }
+      }
+      else{
         myDatabase.ref("users").set(users+1);
         myDatabase.ref("leaderboard").child(uid).update(boardData);
       }
-    }
-    else{
-      myDatabase.ref("users").set(users+1);
-      myDatabase.ref("leaderboard").child(uid).update(boardData);
-    }
-  });
+    });
+  }
   setTimeout(pullBoard,1500);
   $('#wordamentBoard').show();
   document.getElementById("boardTimer").innerHTML=timer[0].toString(10)+":"+timer[1].toString(10)+timer[2].toString(10);
