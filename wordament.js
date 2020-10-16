@@ -59,14 +59,9 @@ myDatabase.ref("users").on('value',ss=>{
 let setWords=function(){
   fetch('https://serious-available-idea.glitch.me/words', )
   .then(function(response){
-    //response.text().then(function(text) {
-      //words = text.split("\n");
-      //console.log(response);
     response.json().then(function(data) {
       words=data;
-      //console.log(words);
      });
-    //});
   });
 }
 setWords();
@@ -119,7 +114,9 @@ let setGame=function(){
         document.getElementById("tile"+(i+1)).innerHTML=board[i].letter;
         document.getElementById("score"+(i+1)).innerHTML=board[i].score;
         document.getElementById("score"+(i+1)).addEventListener("mousedown", tileClick);
+        document.getElementById("tile"+(i+1)).addEventListener("mousedown", tileClick);
         document.getElementById("score"+(i+1)).addEventListener("mouseover", tileOver);
+        document.getElementById("tile"+(i+1)).addEventListener("mouseover", tileOver);
         document.addEventListener("mouseup", tileRelease);
     }
   },600);
@@ -167,6 +164,7 @@ let setLeaderboard=function(){
 
 let pullBoard=function(){
   leaderboard=[];
+  document.getElementById("leaderboard").innerHTML="";
     myDatabase.ref("leaderboard").on('value',ss=>{
       let data=ss.val();
       if(data!=null){
@@ -175,7 +173,6 @@ let pullBoard=function(){
           leaderboard.push(data[id]);
         });
         leaderboard.sort(function(a,b){return b.userScore - a.userScore});
-        document.getElementById("leaderboard").innerHTML="";
         leaderboard.map(user=>{
           document.getElementById("leaderboard").innerHTML+=user.user+": "+user.userScore+"<br>";
         })
@@ -249,7 +246,7 @@ let tileClick=function(){
     document.getElementById("tile"+tile).style.backgroundColor="blue";
     guess+=document.getElementById("tile"+tile).innerHTML;
     document.getElementById("current").innerHTML=guess;
-    guessScore+=parseInt(this.innerHTML);
+    guessScore+=parseInt(document.getElementById("score"+tile).innerHTML);
     curPos[0]=Math.floor((tile-1)/4);
     curPos[1]=Math.floor((tile-1)%4);
     usedPos.push(tile);
@@ -266,7 +263,7 @@ let tileOver=function(){
     document.getElementById("tile"+usedPos[usedPos.length-1]).style.backgroundColor="rgb(0, 191, 255)";
     guess=guess.substring(0,guess.length-1);
     document.getElementById("current").innerHTML=guess;
-    guessScore-=parseInt(this.innerHTML);
+    guessScore-=parseInt(document.getElementById("score"+tile).innerHTML);
     
     usedPos.pop();
     lastPos[0]=Math.floor((usedPos[usedPos.length-2]-1)/4);
@@ -277,7 +274,7 @@ let tileOver=function(){
       document.getElementById("tile"+tile).style.backgroundColor="blue";
       guess+=document.getElementById("tile"+tile).innerHTML;
       document.getElementById("current").innerHTML=guess;
-      guessScore+=parseInt(this.innerHTML);
+      guessScore+=parseInt(document.getElementById("score"+tile).innerHTML);
       lastPos[0]=Math.floor((usedPos[usedPos.length-1]-1)/4);
       lastPos[1]=Math.floor((usedPos[usedPos.length-1]-1)%4);
       usedPos.push(tile);
@@ -350,45 +347,41 @@ let setBoardShort=function(){
   }
 }
 
-let findTile=function(id){
-  let tile;
-  
+let findTile=function(id){  
   switch(id){
-    case "score1":
+    case "score1": case "tile1":
       return 1;
-    case "score2":
+    case "score2": case "tile2":
       return 2;
-    case "score3":
+    case "score3": case "tile3":
       return 3;
-    case "score4":
+    case "score4": case "tile4":
       return 4;
-    case "score5":
+    case "score5": case "tile5":
       return 5;
-    case "score6":
+    case "score6": case "tile6":
       return 6;
-    case "score7":
+    case "score7": case "tile7":
       return 7;
-    case "score8":
+    case "score8": case "tile8":
       return 8;
-    case "score9":
+    case "score9": case "tile9":
       return 9;
-    case "score10":
+    case "score10": case "tile10":
       return 10;
-    case "score11":
+    case "score11": case "tile11":
       return 11;
-    case "score12":
+    case "score12": case "tile12":
       return 12;
-    case "score13":
-      return 13;
-    case "score14":
+    case "score13": case "tile13":
+      return 13; 
+    case "score14": case "tile14":
       return 14;
-    case "score15":
+    case "score15": case "tile15":
       return 15;
-    case "score16":
+    case "score16": case "tile16":
       return 16;
   }
-  
-  return tile;
 }
 
 setTimeout(function(){
